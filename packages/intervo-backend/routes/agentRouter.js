@@ -381,38 +381,23 @@ router.post("/", async (req, res) => {
     const templateAgentId = "678f713ab9f771803ef0677c";
     const templateAgent = await Agent.findById(templateAgentId);
 
-    if (!templateAgent) {
-      return res.status(400).json({ error: "Template agent not found" });
+    let sanitizedTemplateData = {};
+    if (templateAgent) {
+      const templateData = templateAgent.toObject();
+      delete templateData._id;
+      sanitizedTemplateData = removePrivateProperties(templateData);
+
+      if (sanitizedTemplateData.prompt) {
+        const knownValues = { agentName: name, agentType: agentType };
+        const defaultValues = { businessName: "ABC Business" };
+        sanitizedTemplateData.prompt = transformPromptTemplate(
+          sanitizedTemplateData.prompt,
+          knownValues,
+          defaultValues
+        );
+      }
     }
 
-    // Convert to plain object and remove _id
-    const templateData = templateAgent.toObject();
-    delete templateData._id;
-    
-    // Remove any private properties from the template
-    const sanitizedTemplateData = removePrivateProperties(templateData);
-
-    // Transform any prompt templates in the data
-    if (sanitizedTemplateData.prompt) {
-      // Set up known values from the request
-      const knownValues = {
-        agentName: name,
-        agentType: agentType
-      };
-      
-      // Set up default values for any unknown variables
-      const defaultValues = {
-        businessName: "ABC Business"
-      };
-      
-      // Transform the prompt template
-      sanitizedTemplateData.prompt = transformPromptTemplate(
-        sanitizedTemplateData.prompt, 
-        knownValues, 
-        defaultValues
-      );
-    }
-    
     const agentData = {
       ...sanitizedTemplateData,
       name,
