@@ -1,0 +1,72 @@
+// @use "variables" as *;
+// @tailwind base;
+// @tailwind components;
+// @tailwind utilities;
+
+// // Light Theme
+// :root {
+//   --background: hsl(#{$background});
+//   --foreground: hsl(#{$foreground});
+//   --card: hsl(#{$card});
+//   --card-foreground: hsl(#{$card-foreground});
+//   --popover: hsl(#{$popover});
+//   --popover-foreground: hsl(#{$popover-foreground});
+//   --primary: hsl(#{$primary});
+//   --primary-foreground: hsl(#{$primary-foreground});
+//   --secondary: hsl(#{$secondary});
+//   --secondary-foreground: hsl(#{$secondary-foreground});
+//   --muted: hsl(#{$muted});
+//   --muted-foreground: hsl(#{$muted-foreground});
+//   --accent: hsl(#{$accent});
+//   --accent-foreground: hsl(#{$accent-foreground});
+//   --destructive: hsl(#{$destructive});
+//   --destructive-foreground: hsl(#{$destructive-foreground});
+//   --border: hsl(#{$border});
+//   --input: hsl(#{$input});
+//   --ring: hsl(#{$ring});
+//   --chart-1: hsl(#{$chart-1});
+//   --chart-2: hsl(#{$chart-2});
+//   --chart-3: hsl(#{$chart-3});
+//   --chart-4: hsl(#{$chart-4});
+//   --chart-5: hsl(#{$chart-5});
+//   --radius: #{$radius};
+// }
+
+// // Dark Theme
+// .dark {
+//   --background: hsl(#{$dark-background});
+//   --foreground: hsl(#{$dark-foreground});
+//   --card: hsl(#{$dark-card});
+//   --card-foreground: hsl(#{$dark-card-foreground});
+//   --popover: hsl(#{$dark-popover});
+//   --popover-foreground: hsl(#{$dark-popover-foreground});
+//   --primary: hsl(#{$dark-primary});
+//   --primary-foreground: hsl(#{$dark-primary-foreground});
+//   --secondary: hsl(#{$dark-secondary});
+//   --secondary-foreground: hsl(#{$dark-secondary-foreground});
+//   --muted: hsl(#{$dark-muted});
+//   --muted-foreground: hsl(#{$dark-muted-foreground});
+//   --accent: hsl(#{$dark-accent});
+//   --accent-foreground: hsl(#{$dark-accent-foreground});
+//   --destructive: hsl(#{$dark-destructive});
+//   --destructive-foreground: hsl(#{$dark-destructive-foreground});
+//   --border: hsl(#{$dark-border});
+//   --input: hsl(#{$dark-input});
+//   --ring: hsl(#{$dark-ring});
+//   --chart-1: hsl(#{$dark-chart-1});
+//   --chart-2: hsl(#{$dark-chart-2});
+//   --chart-3: hsl(#{$dark-chart-3});
+//   --chart-4: hsl(#{$dark-chart-4});
+//   --chart-5: hsl(#{$dark-chart-5});
+// }
+
+// // Base Styles
+// @layer base {
+//   * {
+//     @apply border-border;
+//   }
+//   body {
+//     @apply bg-background text-foreground;
+//     font-family: Arial, Helvetica, sans-serif;
+//   }
+// }

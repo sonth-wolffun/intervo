@@ -1,0 +1,21 @@
+{
+  "name": "intervo-react",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:next": "npm run dev --workspace=intervo-frontend",
+    "build:next": "npm run build --workspace=intervo-frontend",
+    "build:cloudflare": "npm run build:next && cd packages/intervo-frontend && npx @cloudflare/next-on-pages@1",
+    "dev:widget": "npm run dev --workspace=intervo-widget",
+    "build:widget": "npm run build --workspace=intervo-widget",
+    "publish:widget:ci": "npm run build:widget && npx changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.28.1",
+    "tailwindcss": "^3.4.14",
+    "postcss": "^8.4.47",
+    "autoprefixer": "^10.4.20"
+  }
+}

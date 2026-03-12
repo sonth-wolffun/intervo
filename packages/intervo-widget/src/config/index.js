@@ -1,0 +1,1 @@
+export const ALLOWED_ADMIN_DOMAINS = ["codedesign.app", "codedesign.ai", "gmail.com"];

@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Healthcare Agent Builder</title>
+  </head>
+  <body>
+    <style>
+      :root {
+        --background: white;
+        --foreground: #020617;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Oxygen, Ubuntu, Cantarell, sans-serif;
+      }
+
+      .outer-container {
+        width: 832px;
+        max-width: 832px;
+        border-radius: 28px;
+        background: rgba(247, 247, 247, 0.8);
+        box-shadow: 0px 1px 1px 0px rgba(41, 41, 41, 0.04),
+          0px 3px 3px -1px rgba(41, 41, 41, 0.02),
+          0px 1px 6px -3px rgba(41, 41, 41, 0.04),
+          0px 12px 12px -6px rgba(41, 41, 41, 0.04),
+          0px 24px 24px -12px rgba(41, 41, 41, 0.04),
+          0px 48px 48px -24px rgba(41, 41, 41, 0.04),
+          0px -1px 1px 1px rgba(51, 51, 51, 0.06) inset, 0px 0px 0px 1px #e0e0e0,
+          0px 0px 30px 10px rgba(255, 0, 0, 0);
+        display: flex;
+        padding: 10px;
+        flex-direction: column;
+        align-items: flex-start;
+        align-self: stretch;
+        position: relative;
+        overflow: hidden;
+        animation: rainbow-shadow-glow 4s ease-in-out forwards;
+      }
+
+      .outer-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          135deg,
+          #ff0000,
+          #ff7f00,
+          #ffff00,
+          #00ff00,
+          #0000ff,
+          #4b0082,
+          #8b00ff,
+          #ff0000
+        );
+        background-size: 200% 200%;
+        z-index: 0;
+        opacity: 0;
+        animation: rainbow-flow 4s ease-in-out forwards;
+      }
+
+      .outer-container::after {
+        content: "";
+        position: absolute;
+        top: -120px;
+        left: -120px;
+        width: calc(100% + 240px);
+        height: calc(100% + 240px);
+        background: linear-gradient(
+          135deg,
+          #ff0000,
+          #ff7f00,
+          #ffff00,
+          #00ff00,
+          #0000ff,
+          #4b0082,
+          #8b00ff,
+          #ff0000
+        );
+        background-size: 200% 200%;
+        border-radius: 50px;
+        z-index: -2;
+        opacity: 0;
+        filter: blur(30px);
+        animation: rainbow-shadow-flow 4s ease-in-out forwards;
+      }
+
+      @keyframes rainbow-shadow-flow {
+        0% {
+          opacity: 0;
+          background-position: 0% 50%;
+        }
+        20% {
+          opacity: 0.8;
+        }
+        80% {
+          opacity: 0.8;
+          background-position: 100% 50%;
+        }
+        100% {
+          opacity: 0;
+          background-position: 100% 50%;
+        }
+      }
+
+      @keyframes rainbow-shadow-glow {
+        0% {
+          box-shadow: 0px 1px 1px 0px rgba(41, 41, 41, 0.04),
+            0px 3px 3px -1px rgba(41, 41, 41, 0.02),
+            0px 1px 6px -3px rgba(41, 41, 41, 0.04),
+            0px 12px 12px -6px rgba(41, 41, 41, 0.04),
+            0px 24px 24px -12px rgba(41, 41, 41, 0.04),
+            0px 48px 48px -24px rgba(41, 41, 41, 0.04),
+            0px -1px 1px 1px rgba(51, 51, 51, 0.06) inset,
+            0px 0px 0px 1px #e0e0e0, 0px 0px 30px 10px rgba(255, 0, 0, 0.15);
+        }
+        15% {
+          box-shadow: 0px 1px 1px 0px rgba(41, 41, 41, 0.04),
+            0px 3px 3px -1px rgba(41, 41, 41, 0.02),
+            0px 1px 6px -3px rgba(41, 41, 41, 0.04),
+            0px 12px 12px -6px rgba(41, 41, 41, 0.04),
+            0px 24px 24px -12px rgba(41, 41, 41, 0.04),
+            0px 48px 48px -24px rgba(41, 41, 41, 0.04),
+            0px -1px 1px 1px rgba(51, 51, 51, 0.06) inset,
+            0px 0px 0px 1px #e0e0e0, 0px 0px 30px 10px rgba(255, 127, 0, 0.15);
+        }
+        30% {
+          box-shadow: 0px 1px 1px 0px rgba(41, 41, 41, 0.04),
+            0px 3px 3px -1px rgba(41, 41, 41, 0.02),
+            0px 1px 6px -3px rgba(41, 41, 41, 0.04),
+            0px 12px 12px -6px rgba(41, 41, 41, 0.04),
+            0px 24px 24px -12px rgba(41, 41, 41, 0.04),
+            0px 48px 48px -24px rgba(41, 41, 41, 0.04),
+            0px -1px 1px 1px rgba(51, 51, 51, 0.06) inset,
+            0px 0px 0px 1px #e0e0e0, 0px 0px 30px 10px rgba(255, 255, 0, 0.2);
+        }
+        40% {
+          box-shadow: 0px 1px 1px 0px rgba(41, 41, 41, 0.04),
+            0px 3px 3px -1px rgba(41, 41, 41, 0.02),
+            0px 1px 6px -3px rgba(41, 41, 41, 0.04),
+            0px 12px 12px -6px rgba(41, 41, 41, 0.04),
+            0px 24px 24px -12px rgba(41, 41, 41, 0.04),
+            0px 48px 48px -24px rgba(41, 41, 41, 0.04),
+            0px -1px 1px 1px rgba(51, 51, 51, 0.06) inset,
+            0px 0px 0px 1px #e0e0e0, 0px 0px 30px 10px rgba(0, 255, 0, 0.15);
+        }
+        60% {
+          box-shadow: 0px 1px 1px 0px rgba(41, 41, 41, 0.04),
+            0px 3px 3px -1px rgba(41, 41, 41, 0.02),
+            0px 1px 6px -3px rgba(41, 41, 41, 0.04),
+            0px 12px 12px -6px rgba(41, 41, 41, 0.04),
+            0px 24px 24px -12px rgba(41, 41, 41, 0.04),
+            0px 48px 48px -24px rgba(41, 41, 41, 0.04),
+            0px -1px 1px 1px rgba(51, 51, 51, 0.06) inset,
+            0px 0px 0px 1px #e0e0e0, 0px 0px 30px 10px rgba(0, 0, 255, 0.15);
+        }
+        70% {
+          box-shadow: 0px 1px 1px 0px rgba(41, 41, 41, 0.04),
+            0px 3px 3px -1px rgba(41, 41, 41, 0.02),
+            0px 1px 6px -3px rgba(41, 41, 41, 0.04),
+            0px 12px 12px -6px rgba(41, 41, 41, 0.04),
+            0px 24px 24px -12px rgba(41, 41, 41, 0.04),
+            0px 48px 48px -24px rgba(41, 41, 41, 0.04),
+            0px -1px 1px 1px rgba(51, 51, 51, 0.06) inset,
+            0px 0px 0px 1px #e0e0e0, 0px 0px 30px 10px rgba(75, 0, 130, 0.15);
+        }
+        80% {
+          box-shadow: 0px 1px 1px 0px rgba(41, 41, 41, 0.04),
+            0px 3px 3px -1px rgba(41, 41, 41, 0.02),
+            0px 1px 6px -3px rgba(41, 41, 41, 0.04),
+            0px 12px 12px -6px rgba(41, 41, 41, 0.04),
+            0px 24px 24px -12px rgba(41, 41, 41, 0.04),
+            0px 48px 48px -24px rgba(41, 41, 41, 0.04),
+            0px -1px 1px 1px rgba(51, 51, 51, 0.06) inset,
+            0px 0px 0px 1px #e0e0e0, 0px 0px 30px 10px rgba(139, 0, 255, 0.15);
+        }
+        85% {
+          box-shadow: 0px 1px 1px 0px rgba(41, 41, 41, 0.04),
+            0px 3px 3px -1px rgba(41, 41, 41, 0.02),
+            0px 1px 6px -3px rgba(41, 41, 41, 0.04),
+            0px 12px 12px -6px rgba(41, 41, 41, 0.04),
+            0px 24px 24px -12px rgba(41, 41, 41, 0.04),
+            0px 48px 48px -24px rgba(41, 41, 41, 0.04),
+            0px -1px 1px 1px rgba(51, 51, 51, 0.06) inset,
+            0px 0px 0px 1px #e0e0e0, 0px 0px 30px 10px rgba(139, 0, 255, 0.15);
+        }
+        100% {
+          box-shadow: 0px 1px 1px 0px rgba(41, 41, 41, 0.04),
+            0px 3px 3px -1px rgba(41, 41, 41, 0.02),
+            0px 1px 6px -3px rgba(41, 41, 41, 0.04),
+            0px 12px 12px -6px rgba(41, 41, 41, 0.04),
+            0px 24px 24px -12px rgba(41, 41, 41, 0.04),
+            0px 48px 48px -24px rgba(41, 41, 41, 0.04),
+            0px -1px 1px 1px rgba(51, 51, 51, 0.06) inset,
+            0px 0px 0px 1px #e0e0e0, 0px 0px 30px 10px rgba(255, 0, 0, 0);
+        }
+      }
+
+      @keyframes rainbow-flow {
+        0% {
+          opacity: 1;
+          background-position: 0% 50%;
+        }
+        80% {
+          opacity: 1;
+          background-position: 100% 50%;
+        }
+        100% {
+          opacity: 0;
+          background-position: 100% 50%;
+        }
+      }
+
+      .container {
+        background: var(--background);
+        border-radius: 18px;
+        border: 1px solid #e2e8f0;
+        box-shadow: 0px -1px 1px 1px rgba(51, 51, 51, 0.06) inset,
+          0px 1px 1px 0px rgba(41, 41, 41, 0.04),
+          0px 3px 3px -1px rgba(41, 41, 41, 0.02),
+          0px 1px 6px -3px rgba(41, 41, 41, 0.04),
+          0px 12px 12px -6px rgba(41, 41, 41, 0.04),
+          0px 24px 24px -12px rgba(41, 41, 41, 0.04),
+          0px 48px 48px -24px rgba(41, 41, 41, 0.04);
+        width: 100%;
+        padding: 22px 30px;
+        position: relative;
+        height: 402px;
+        overflow: visible;
+        z-index: 1;
+        position: relative;
+      }
+
+      .header-buttons {
+        display: flex;
+        gap: 12px;
+      }
+
+      .button {
+        display: flex;
+        padding: 5px 13px;
+        justify-content: center;
+        align-items: center;
+        gap: 8px;
+        border-radius: 9999px;
+        border: 1px solid rgba(17, 17, 17, 0.2);
+        background: transparent;
+        font-size: 14px;
+        color: rgba(17, 17, 17, 0.6);
+        cursor: pointer;
+        transition: all 0.2s ease;
+        opacity: 0.8;
+      }
+
+      .button:hover {
+        background: rgba(17, 17, 17, 0.05);
+      }
+
+      .button.selected {
+        border: 1px solid rgba(17, 17, 17, 0.4);
+        background: rgba(17, 17, 17, 0.1);
+        opacity: 1;
+      }
+
+      .main-content {
+        text-align: left;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+
+      #mainInterface,
+      #promptInterface {
+        height: calc(100% - 42px); /* Account for header buttons height */
+        overflow-y: auto;
+        padding: 0 2px 2px 2px;
+      }
+
+      .large-text {
+        color: var(--foreground);
+        font-family: "Helvetica Neue";
+        font-size: 36px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 50px;
+        letter-spacing: -0.721px;
+        margin-bottom: 16px;
+      }
+
+      .static-text {
+        opacity: 0.5;
+      }
+
+      .dropdown {
+        display: inline;
+        position: relative;
+      }
+
+      .dropdown-button {
+        background: none;
+        border: 1px solid transparent;
+        color: var(--foreground);
+        font-family: "Helvetica Neue";
+        font-size: 35.297px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 50px;
+        letter-spacing: -0.721px;
+        text-decoration-line: underline;
+        text-decoration-style: solid;
+        text-decoration-skip-ink: auto;
+        text-decoration-thickness: 8%;
+        text-underline-offset: 25%;
+        text-underline-position: from-font;
+        text-decoration-color: #16a34a;
+        cursor: pointer;
+        position: relative;
+        opacity: 1;
+        padding: 8px 4px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+      }
+
+      .dropdown-button:hover {
+        background: rgba(22, 163, 74, 0.1);
+      }
+
+      .dropdown-button:focus,
+      .dropdown-button:active {
+        outline: none;
+        border: 1px solid #16a34a;
+        background: rgba(22, 163, 74, 0.05);
+        text-decoration: none;
+        box-shadow: 0 3px 0 -1px #16a34a;
+      }
+
+      .editable-text {
+        color: var(--foreground);
+        font-family: "Helvetica Neue";
+        font-size: 35.297px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 50px;
+        letter-spacing: -0.721px;
+        text-decoration-line: underline;
+        text-decoration-style: solid;
+        text-decoration-skip-ink: auto;
+        text-decoration-thickness: 8%;
+        text-underline-offset: 25%;
+        text-underline-position: from-font;
+        text-decoration-color: #16a34a;
+        cursor: text;
+        display: inline;
+        opacity: 1;
+        position: relative;
+        padding: 8px 4px;
+        border-radius: 4px;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+      }
+
+      .editable-text:hover {
+        background: rgba(22, 163, 74, 0.1);
+      }
+
+      .editable-text:focus {
+        outline: none;
+        border: 1px solid #16a34a;
+        background: rgba(22, 163, 74, 0.05);
+        text-decoration: none;
+        box-shadow: 0 3px 0 -1px #16a34a;
+      }
+
+      .editable-text:empty:before {
+        content: attr(data-placeholder);
+        color: rgba(0, 0, 0, 0.4);
+        font-style: italic;
+      }
+
+      .editable-text-label {
+        border-radius: 4px 4px 0px 0px;
+        background: var(--success, #16a34a);
+        position: absolute;
+        top: -32px;
+        left: -1px;
+        display: none;
+        padding: 4px 8px;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        color: #fff;
+        font-family: Inter, -apple-system, BlinkMacSystemFont, sans-serif;
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: normal;
+        z-index: 15;
+        white-space: nowrap;
+      }
+
+      .editable-text:focus + .editable-text-label {
+        display: flex;
+      }
+
+      .editable-text-container {
+        position: relative;
+        display: inline;
+        line-height: 64px;
+      }
+
+      .content-scroll-area {
+        flex: 1;
+        overflow-y: auto;
+        padding-top: 20px;
+
+        max-height: calc(100% - 80px); /* Reserve space for button */
+      }
+
+      .large-text {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+      }
+
+      .editable-text {
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        display: inline;
+      }
+
+      .dropdown-button::after {
+        content: "";
+        display: inline-block;
+        width: 0;
+        height: 0;
+        border-left: 6px solid transparent;
+        border-right: 6px solid transparent;
+        border-top: 6px solid var(--foreground);
+        margin-left: 8px;
+        vertical-align: middle;
+      }
+
+      .dropdown-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        border-radius: 6px;
+        border: 1px solid var(--slate-300, #cbd5e1);
+        background: var(--slate-50, #f8fafc);
+        box-shadow: 0px -1px 1px 1px rgba(51, 51, 51, 0.06) inset,
+          0px 1px 1px 0px rgba(41, 41, 41, 0.04),
+          0px 3px 3px -1px rgba(41, 41, 41, 0.02),
+          0px 1px 6px -3px rgba(41, 41, 41, 0.04),
+          0px 12px 12px -6px rgba(41, 41, 41, 0.04),
+          0px 24px 24px -12px rgba(41, 41, 41, 0.04),
+          0px 48px 48px -24px rgba(41, 41, 41, 0.04);
+        display: none;
+        padding: 9px 16px;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 4px;
+        min-width: 360px;
+        width: fit-content;
+        z-index: 10;
+        margin-top: 10px;
+      }
+
+      .dropdown-menu.active {
+        display: flex;
+      }
+
+      .dropdown-item {
+        color: var(--foreground);
+        font-family: "Helvetica Neue";
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 32px;
+        letter-spacing: -0.721px;
+        cursor: pointer;
+        transition: background 0.2s ease;
+        padding: 4px 16px;
+        border-radius: 4px;
+        text-align: center;
+        white-space: nowrap;
+        width: 100%;
+      }
+
+      .dropdown-item:hover {
+        background: rgba(255, 255, 255, 0.8);
+      }
+
+      .subtitle {
+        color: var(--amber-500, #f59e0b);
+        font-family: "Helvetica Neue";
+        font-size: 19.629px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 28px;
+        letter-spacing: 0.052px;
+        display: flex;
+        padding-top: 8px;
+        flex-direction: column;
+        align-items: flex-start;
+        align-self: stretch;
+        margin-top: 16px;
+        margin-bottom: 32px;
+      }
+
+      .generate-button {
+        border-radius: 100px;
+        background: linear-gradient(
+          85deg,
+          #2e2e2e 0%,
+          #3e3e3e 32%,
+          #6e6e6e 50%,
+          #3e3e3e 64%,
+          #2e2e2e 100%
+        );
+        box-shadow: 0px 16px 8px 0px rgba(31, 31, 31, 0.01),
+          0px 12px 6px 0px rgba(31, 31, 31, 0.04),
+          0px 4px 4px 0px rgba(31, 31, 31, 0.07),
+          0px 1px 3px 0px rgba(31, 31, 31, 0.08), 0px 0px 0px 1px #0f0f0f,
+          0px 1px 2px 0px rgba(255, 255, 255, 0.12) inset;
+        display: flex;
+        height: 48px;
+        padding: 0px 18px;
+        justify-content: center;
+        align-items: center;
+        align-self: stretch;
+        color: #fff;
+        text-align: center;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui,
+          sans-serif;
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 26px;
+        border: none;
+        cursor: pointer;
+        width: 100%;
+        position: relative;
+        overflow: hidden;
+        transition: all 0.2s ease;
+      }
+
+      .generate-button::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        transition: left 0.8s ease;
+      }
+
+      .generate-button:hover::before {
+        left: 100%;
+      }
+
+      .prompt-input {
+        width: 100%;
+        height: 100%;
+        padding: 16px;
+        border: none;
+        border-radius: 12px;
+        font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont,
+          sans-serif;
+        font-size: 20px;
+        font-weight: 400;
+        line-height: 28px;
+        letter-spacing: -0.7px;
+        resize: none;
+        outline: none;
+        color: var(--foreground);
+        min-height: 250px;
+      }
+
+      .prompt-input::placeholder {
+        color: var(--foreground);
+        font-family: "Helvetica Neue", -apple-system, BlinkMacSystemFont,
+          sans-serif;
+        font-size: 20px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 28px;
+        letter-spacing: -0.7px;
+        opacity: 0.5;
+      }
+
+      .prompt-input:focus::placeholder {
+        opacity: 0;
+      }
+
+      .hidden {
+        display: none !important;
+      }
+
+      @media (max-width: 991px) {
+        .outer-container {
+          width: 100%;
+        }
+      }
+
+      /* Mobile responsive styles */
+      @media (max-width: 768px) {
+        body {
+          padding: 16px;
+        }
+
+        .outer-container {
+          width: 100%;
+          max-width: 100%;
+          padding: 8px;
+          border-radius: 20px;
+        }
+
+        .container {
+          padding: 20px 24px !important;
+          height: 380px;
+          border-radius: 12px;
+          overflow: visible;
+          width: 100%;
+        }
+
+        .header-buttons {
+          gap: 8px;
+        }
+
+        .button {
+          padding: 8px 16px;
+          font-size: 14px;
+        }
+
+        .large-text {
+          font-size: 24px;
+          line-height: 30px;
+          letter-spacing: -0.4px;
+          margin-bottom: 12px;
+        }
+
+        .dropdown-button {
+          font-size: 23px;
+          line-height: 30px;
+          letter-spacing: -0.4px;
+        }
+
+        .editable-text {
+          font-size: 23px;
+          line-height: 30px;
+          letter-spacing: -0.4px;
+        }
+
+        .editable-text-container {
+          line-height: 44px;
+        }
+
+        .editable-text-label {
+          display: none !important;
+        }
+
+        br {
+          display: none;
+        }
+
+        .dropdown-menu {
+          min-width: 280px;
+          padding: 6px 12px;
+          border-radius: 8px;
+          left: 0;
+          right: 0;
+          margin-left: auto;
+          margin-right: auto;
+          position: fixed;
+          top: auto;
+          transform: none;
+          max-width: calc(100vw - 32px);
+          margin-top: 4px;
+        }
+
+        .dropdown-item {
+          font-size: 20px;
+          line-height: 28px;
+          padding: 8px 12px;
+        }
+
+        .subtitle {
+          font-size: 16px;
+          line-height: 24px;
+          margin-top: 12px;
+          margin-bottom: 24px;
+        }
+
+        .generate-button {
+          height: 52px;
+          font-size: 16px;
+          padding: 0px 20px;
+        }
+
+        .prompt-input {
+          font-size: 18px;
+          line-height: 24px;
+          letter-spacing: -0.4px;
+          padding: 14px;
+          min-height: 120px;
+          margin-bottom: 24px;
+        }
+
+        .prompt-input::placeholder {
+          font-size: 18px;
+          line-height: 24px;
+          letter-spacing: -0.4px;
+        }
+
+        #mainInterface,
+        #promptInterface {
+          height: calc(100% - 40px);
+          overflow-y: auto;
+        }
+
+        #mainInterface:not(.hidden),
+        #promptInterface:not(.hidden) {
+          display: flex;
+          flex-direction: column;
+        }
+
+        .main-content {
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: space-between;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .outer-container {
+          padding: 6px;
+          border-radius: 16px;
+          width: 100%;
+        }
+
+        .container {
+          padding: 16px 20px;
+          height: 360px;
+          border-radius: 10px;
+          overflow: visible;
+        }
+
+        .large-text {
+          font-size: 20px;
+          line-height: 20px;
+        }
+
+        .dropdown-button {
+          font-size: 19px;
+          line-height: 20px;
+        }
+
+        .editable-text {
+          font-size: 19px;
+          line-height: 20px;
+        }
+
+        .editable-text-container {
+          line-height: 44px;
+        }
+
+        .editable-text-label {
+          display: none !important;
+        }
+
+        br {
+          display: none;
+        }
+
+        .dropdown-menu {
+          min-width: 240px;
+          left: 0;
+          right: 0;
+          margin-left: auto;
+          margin-right: 42px;
+          position: fixed;
+          top: auto;
+          transform: none;
+          max-width: calc(100vw - 24px);
+        }
+
+        .dropdown-item {
+          font-size: 18px;
+          line-height: 26px;
+        }
+
+        .subtitle {
+          font-size: 14px;
+          line-height: 20px;
+        }
+
+        .prompt-input {
+          font-size: 16px;
+          line-height: 22px;
+          padding: 12px;
+        }
+
+        .prompt-input::placeholder {
+          font-size: 16px;
+          line-height: 22px;
+        }
+      }
+    </style>
+
+    <div class="outer-container">
+      <div class="container">
+        <div class="header-buttons">
+          <button class="button selected" id="getSuggestionsBtn">
+            Get suggestions
+          </button>
+          <button class="button" id="writePromptBtn">Write a prompt</button>
+        </div>
+
+        <div id="mainInterface">
+          <div class="main-content">
+            <div class="content-scroll-area">
+              <div class="large-text">
+                <span class="static-text">Make me</span>
+                <div class="dropdown">
+                  <button
+                    class="dropdown-button"
+                    id="projectType"
+                    data-dropdown="projectDropdown"
+                  >
+                    a voice & chat agent
+                  </button>
+                  <div class="dropdown-menu" id="projectDropdown">
+                    <div
+                      class="dropdown-item"
+                      data-target="projectType"
+                      data-value="a voice & chat agent"
+                    >
+                      a voice & chat agent
+                    </div>
+                    <div
+                      class="dropdown-item"
+                      data-target="projectType"
+                      data-value="a voice agent"
+                    >
+                      a voice agent
+                    </div>
+                    <div
+                      class="dropdown-item"
+                      data-target="projectType"
+                      data-value="a chat agent"
+                    >
+                      a chat agent
+                    </div>
+                  </div>
+                </div>
+                <span class="static-text">for</span>
+                <span class="editable-text-container">
+                  <span
+                    class="editable-text"
+                    contenteditable="true"
+                    data-placeholder="Enter industry..."
+                    >Healthcare</span
+                  >
+                  <span class="editable-text-label">Who it's for</span>
+                </span>
+                <span class="static-text">that helps</span>
+                <span class="editable-text-container">
+                  <span
+                    class="editable-text"
+                    contenteditable="true"
+                    data-placeholder="Describe what it does..."
+                    >create a support agent that books your calendar</span
+                  >
+                  <span class="editable-text-label">What it does</span>
+                </span>
+              </div>
+            </div>
+
+            <button class="generate-button" id="generateAgentBtn">
+              Generate AI agent For Free
+            </button>
+          </div>
+        </div>
+
+        <div id="promptInterface" class="hidden">
+          <div class="main-content">
+            <div class="content-scroll-area">
+              <textarea
+                class="prompt-input"
+                placeholder="Describe your idea in detail, and we'll build it for you..."
+              ></textarea>
+            </div>
+            <button class="generate-button" id="generateFromPromptBtn">
+              Generate AI agent For Free
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let currentDropdown = null;
+
+      // Preset options for random suggestions
+      const projectTypes = [
+        "a voice & chat agent",
+        "a voice agent",
+        "a chat agent",
+      ];
+
+      const industries = [
+        "Healthcare",
+        "Education",
+        "Finance",
+        "Retail",
+        "Technology",
+        "Real Estate",
+        "Legal Services",
+        "Hospitality",
+      ];
+
+      const whatItDoes = [
+        "schedule appointments and send reminders to patients",
+        "answer student questions and provide course information",
+        "customers with account inquiries and transactions",
+        "shoppers with product recommendations and orders",
+        "technical support and troubleshoot issues",
+        "with property viewings and answer buyer questions",
+        "clients with legal document preparation and consultation scheduling",
+        "handle hotel bookings and guest service requests",
+        "create support tickets and track issue resolution",
+        "manage inventory and process customer returns",
+        "provide 24/7 customer support across multiple channels",
+        "automate lead qualification and follow-up processes",
+      ];
+
+      function getRandomElement(array) {
+        return array[Math.floor(Math.random() * array.length)];
+      }
+
+      function applyRandomSuggestions() {
+        // Random project type
+        const projectTypeElement = document.getElementById("projectType");
+        if (projectTypeElement) {
+          const randomProjectType = getRandomElement(projectTypes);
+          projectTypeElement.textContent = randomProjectType;
+        }
+
+        // Random industry and what it does
+        const editableTexts = document.querySelectorAll(".editable-text");
+        if (editableTexts.length >= 2) {
+          const randomIndustry = getRandomElement(industries);
+          editableTexts[0].textContent = randomIndustry;
+
+          const randomWhatItDoes = getRandomElement(whatItDoes);
+          editableTexts[1].textContent = randomWhatItDoes;
+        }
+      }
+
+      function toggleDropdown(dropdownId) {
+        const dropdown = document.getElementById(dropdownId);
+
+        // Close any open dropdown
+        if (currentDropdown && currentDropdown !== dropdown) {
+          currentDropdown.classList.remove("active");
+        }
+
+        // Toggle current dropdown
+        dropdown.classList.toggle("active");
+        currentDropdown = dropdown.classList.contains("active")
+          ? dropdown
+          : null;
+      }
+
+      function selectOption(buttonId, option) {
+        const button = document.getElementById(buttonId);
+        button.textContent = option;
+
+        // Close dropdown
+        if (currentDropdown) {
+          currentDropdown.classList.remove("active");
+          currentDropdown = null;
+        }
+      }
+
+      function getSuggestions() {
+        // Show main interface if not already shown
+        document.getElementById("promptInterface").classList.add("hidden");
+        document.getElementById("mainInterface").classList.remove("hidden");
+
+        // Update button states
+        document
+          .querySelectorAll(".button")
+          .forEach((btn) => btn.classList.remove("selected"));
+        document.querySelectorAll(".button")[0].classList.add("selected");
+
+        // Apply random suggestions
+        applyRandomSuggestions();
+      }
+
+      function writePrompt() {
+        document.getElementById("mainInterface").classList.add("hidden");
+        document.getElementById("promptInterface").classList.remove("hidden");
+
+        // Update button states
+        document
+          .querySelectorAll(".button")
+          .forEach((btn) => btn.classList.remove("selected"));
+        document.querySelectorAll(".button")[1].classList.add("selected");
+      }
+
+      function generateAgent() {
+        const projectType = document.getElementById("projectType").textContent;
+        const editableTexts = document.querySelectorAll(".editable-text");
+        const industry = editableTexts[0].textContent;
+        const description = editableTexts[1].textContent;
+
+        // Construct the prompt from the suggestions interface
+        const constructedPrompt = `Make me ${projectType} for ${industry} that helps ${description}`;
+
+        // Store in cookie with domain setting to access from app.intervo.ai
+        document.cookie = `intervo_prompt=${encodeURIComponent(
+          constructedPrompt
+        )}; domain=.intervo.ai; path=/; max-age=3600`;
+
+        // Redirect to app.intervo.ai
+        window.location.href = "https://app.intervo.ai/";
+      }
+
+      function generateFromPrompt() {
+        const prompt = document.querySelector(".prompt-input").value;
+        if (prompt.trim()) {
+          // Store the user-entered prompt in cookie
+          document.cookie = `intervo_prompt=${encodeURIComponent(
+            prompt.trim()
+          )}; domain=.intervo.ai; path=/; max-age=3600`;
+
+          // Redirect to app.intervo.ai
+          window.location.href = "https://app.intervo.ai/";
+        } else {
+          alert("Please enter a description for your agent");
+        }
+      }
+
+      // Close dropdowns when clicking outside
+      document.addEventListener("click", function (event) {
+        if (!event.target.closest(".dropdown")) {
+          if (currentDropdown) {
+            currentDropdown.classList.remove("active");
+            currentDropdown = null;
+          }
+        }
+      });
+
+      // Back to main interface function (for back button if needed)
+      function backToMain() {
+        document.getElementById("promptInterface").classList.add("hidden");
+        document.getElementById("mainInterface").classList.remove("hidden");
+
+        // Update button states
+        document
+          .querySelectorAll(".button")
+          .forEach((btn) => btn.classList.remove("selected"));
+        document.querySelectorAll(".button")[0].classList.add("selected");
+      }
+
+      // Initialize event listeners
+      function initializeEventListeners() {
+        // Header buttons
+        document
+          .getElementById("getSuggestionsBtn")
+          .addEventListener("click", getSuggestions);
+        document
+          .getElementById("writePromptBtn")
+          .addEventListener("click", writePrompt);
+
+        // Dropdown button
+        document
+          .getElementById("projectType")
+          .addEventListener("click", function () {
+            toggleDropdown("projectDropdown");
+          });
+
+        // Dropdown items
+        document.querySelectorAll(".dropdown-item").forEach((item) => {
+          item.addEventListener("click", function () {
+            const target = this.getAttribute("data-target");
+            const value = this.getAttribute("data-value");
+            selectOption(target, value);
+          });
+        });
+
+        // Generate buttons
+        document
+          .getElementById("generateAgentBtn")
+          .addEventListener("click", generateAgent);
+        document
+          .getElementById("generateFromPromptBtn")
+          .addEventListener("click", generateFromPrompt);
+      }
+
+      // Apply random suggestions on page load
+      document.addEventListener("DOMContentLoaded", function () {
+        // Initialize event listeners first
+        initializeEventListeners();
+
+        // Small delay to ensure all elements are rendered
+        setTimeout(function () {
+          applyRandomSuggestions();
+        }, 100);
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,1411 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intervo Pricing - Embed</title>
+  </head>
+  <body>
+    <style>
+      /* Reset and defensive styles for the pricing component */
+      .intervo-pricing-wrapper * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        overflow-x: hidden;
+      }
+
+      .intervo-pricing-wrapper {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          sans-serif !important;
+        background-color: #f8fafc !important;
+        color: #1e293b !important;
+        line-height: 1.6 !important;
+        width: 100% !important;
+        display: block !important;
+        position: relative !important;
+        min-height: 100vh !important;
+      }
+
+      .intervo-pricing-container-outer {
+        max-width: 1200px !important;
+        margin: 0 auto !important;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        min-height: 100vh !important;
+      }
+
+      .intervo-pricing-container-inner {
+        width: 95% !important;
+        max-width: 1000px !important;
+      }
+
+      .intervo-pricing-cards-container {
+        display: flex !important;
+        gap: 12px !important;
+        padding: 8px !important;
+        border-radius: 16px !important;
+        flex-direction: row !important;
+      }
+
+      .intervo-pricing-card {
+        display: flex !important;
+        flex-direction: column !important;
+        background: white !important;
+        border: 1px solid #e4e4e7 !important;
+        width: 100% !important;
+        max-width: 320px !important;
+        padding: 28px !important;
+        border-radius: 12px !important;
+        position: relative !important;
+        box-shadow: none !important;
+        text-decoration: none !important;
+      }
+
+      .intervo-pricing-card:first-child {
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+      }
+
+      .intervo-pricing-card:nth-child(2) {
+        border-radius: 0 !important;
+      }
+
+      .intervo-pricing-card:last-child {
+        border-top-left-radius: 0 !important;
+        border-bottom-left-radius: 0 !important;
+      }
+
+      .intervo-pricing-card.intervo-pricing-open-source {
+        background: transparent !important;
+        border: 2px dashed #d4d4d8 !important;
+        border-top-right-radius: 0 !important;
+        border-bottom-right-radius: 0 !important;
+        border-top-left-radius: 12px !important;
+        border-bottom-left-radius: 12px !important;
+      }
+
+      .intervo-pricing-card.intervo-pricing-open-source
+        .intervo-pricing-card-content {
+        color: #52525b !important;
+      }
+
+      .intervo-pricing-card.intervo-pricing-open-source
+        .intervo-pricing-plan-title
+        h3 {
+        color: #18181b !important;
+      }
+
+      .intervo-pricing-card.intervo-pricing-open-source
+        .intervo-pricing-price-amount {
+        color: #18181b !important;
+      }
+
+      .intervo-pricing-card.intervo-pricing-open-source
+        .intervo-pricing-cta-button {
+        background-color: transparent !important;
+        color: #18181b !important;
+        border: 2px solid #d4d4d8 !important;
+      }
+
+      .intervo-pricing-card.intervo-pricing-open-source
+        .intervo-pricing-cta-button:hover {
+        background-color: #f4f4f5 !important;
+        border-color: #a1a1aa !important;
+      }
+
+      .intervo-pricing-card-content {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 32px !important;
+        justify-content: space-between !important;
+        color: black !important;
+        height: 100% !important;
+      }
+
+      .intervo-pricing-card-header {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 16px !important;
+      }
+
+      .intervo-pricing-plan-title {
+        font-weight: 500 !important;
+      }
+
+      .intervo-pricing-plan-title h3 {
+        font-weight: 600 !important;
+        font-size: 1.875rem !important;
+        line-height: 2.25rem !important;
+        letter-spacing: -0.025em !important;
+        margin: 0 !important;
+        color: inherit !important;
+      }
+
+      .intervo-pricing-plan-subtitle-row {
+        display: flex !important;
+        justify-content: space-between !important;
+        margin-top: 4px !important;
+        align-items: center !important;
+      }
+
+      .intervo-pricing-plan-subtitle {
+        color: #52525b !important;
+        font-size: inherit !important;
+        margin: 0 !important;
+      }
+
+      .intervo-pricing-recommended-badge {
+        height: 28px !important;
+        padding: 2px 12px !important;
+        background-color: #0063e2 !important;
+        border-radius: 32px !important;
+        color: white !important;
+        font-size: 0.875rem !important;
+        display: flex !important;
+        align-items: center !important;
+        border: none !important;
+      }
+
+      .intervo-pricing-price-section {
+        min-height: 90px !important;
+        max-height: 140px !important;
+        display: flex !important;
+        justify-content: flex-end !important;
+        flex-direction: column !important;
+        gap: 12px !important;
+      }
+
+      .intervo-pricing-price-label {
+        color: #52525b !important;
+        line-height: 1.5 !important;
+        margin: 0 !important;
+        font-size: inherit !important;
+      }
+
+      .intervo-pricing-price-display {
+        display: flex !important;
+        align-items: end !important;
+        gap: 6px !important;
+      }
+
+      .intervo-pricing-price-amount {
+        font-weight: 800 !important;
+        font-size: 3rem !important;
+        line-height: 3rem !important;
+        letter-spacing: -0.078125rem !important;
+        margin: 0 !important;
+        color: inherit !important;
+      }
+
+      .intervo-pricing-price-currency {
+        font-size: 1.25rem !important;
+        line-height: 1.75rem !important;
+        font-weight: 600 !important;
+        color: inherit !important;
+      }
+
+      .intervo-pricing-tab-container {
+        width: 100% !important;
+        max-width: 280px !important;
+        position: relative !important;
+      }
+
+      .intervo-pricing-tab-list {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr !important;
+        height: 40px !important;
+        background-color: #f1f5f9 !important;
+        border-radius: 8px !important;
+        padding: 4px !important;
+        color: #64748b !important;
+        font-weight: 500 !important;
+        font-size: 0.875rem !important;
+        line-height: 1.25rem !important;
+        position: relative !important;
+        border: none !important;
+      }
+
+      .intervo-pricing-tab-button {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        white-space: nowrap !important;
+        border-radius: 6px !important;
+        padding: 4px 12px !important;
+        font-size: 0.875rem !important;
+        font-weight: 500 !important;
+        border: none !important;
+        background: none !important;
+        cursor: pointer !important;
+        height: 32px !important;
+        position: relative !important;
+        transition: all 0.2s !important;
+        color: inherit !important;
+        text-decoration: none !important;
+      }
+
+      .intervo-pricing-tab-button.intervo-pricing-active {
+        background: white !important;
+        color: #1e293b !important;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1) !important;
+      }
+
+      .intervo-pricing-save-badge {
+        position: absolute !important;
+        top: -16px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        background: black !important;
+        font-size: 0.75rem !important;
+        line-height: 1rem !important;
+        font-weight: 600 !important;
+        height: 20px !important;
+        border-radius: 9999px !important;
+        padding: 2px 10px !important;
+        color: white !important;
+        display: flex !important;
+        align-items: center !important;
+        white-space: nowrap !important;
+        z-index: 10 !important;
+        border: none !important;
+      }
+
+      .intervo-pricing-tab-content {
+        margin-top: 20px !important;
+      }
+
+      .intervo-pricing-features-section {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 20px !important;
+      }
+
+      .intervo-pricing-features-title {
+        line-height: 1.5 !important;
+        color: #52525b !important;
+        margin: 0 !important;
+        font-size: inherit !important;
+      }
+
+      .intervo-pricing-feature-item {
+        display: flex !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+      }
+
+      .intervo-pricing-feature-text {
+        display: flex !important;
+        align-items: center !important;
+        gap: 8px !important;
+        font-weight: 500 !important;
+        line-height: 1.5 !important;
+        margin: 0 !important;
+        color: inherit !important;
+      }
+
+      .intervo-pricing-check-icon {
+        width: 16px !important;
+        height: 16px !important;
+        color: currentColor !important;
+        flex-shrink: 0 !important;
+      }
+
+      .intervo-pricing-info-icon {
+        width: 20px !important;
+        height: 20px !important;
+        padding: 2px !important;
+        color: #52525b !important;
+        flex-shrink: 0 !important;
+      }
+
+      .intervo-pricing-cta-section {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 8px !important;
+        height: 100% !important;
+        justify-content: flex-end !important;
+        margin-top: auto !important;
+      }
+
+      .intervo-pricing-cta-button {
+        display: inline-flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        gap: 8px !important;
+        white-space: nowrap !important;
+        border-radius: 6px !important;
+        font-size: 0.875rem !important;
+        transition: colors 0.2s !important;
+        border: none !important;
+        background-color: #0f172a !important;
+        color: white !important;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05) !important;
+        height: 40px !important;
+        padding: 8px 12px !important;
+        line-height: 1.5 !important;
+        font-weight: 500 !important;
+        cursor: pointer !important;
+        text-decoration: none !important;
+        font-family: inherit !important;
+      }
+
+      .intervo-pricing-cta-button:hover {
+        background-color: rgba(15, 23, 42, 0.9) !important;
+      }
+
+      .intervo-pricing-cta-subtitle {
+        font-size: 0.875rem !important;
+        line-height: 1.5 !important;
+        color: #52525b !important;
+        text-align: center !important;
+        margin: 0 !important;
+      }
+
+      .intervo-pricing-hidden {
+        display: none !important;
+      }
+
+      /* Mobile responsiveness */
+      @media (max-width: 1200px) {
+        .intervo-pricing-container-inner {
+          width: 95% !important;
+        }
+
+        .intervo-pricing-card {
+          padding: 24px !important;
+          max-width: 300px !important;
+        }
+
+        .intervo-pricing-card-content {
+          gap: 28px !important;
+        }
+      }
+
+      @media (max-width: 950px) {
+        .intervo-pricing-container-inner {
+          width: 100% !important;
+        }
+
+        .intervo-pricing-cards-container {
+          flex-direction: column !important;
+          gap: 16px !important;
+        }
+
+        .intervo-pricing-card {
+          max-width: none !important;
+          padding: 28px !important;
+        }
+
+        .intervo-pricing-card:first-child {
+          border-radius: 12px !important;
+          border-bottom-left-radius: 0 !important;
+          border-bottom-right-radius: 0 !important;
+        }
+
+        .intervo-pricing-card:nth-child(2) {
+          border-radius: 0 !important;
+        }
+
+        .intervo-pricing-card:last-child {
+          border-radius: 12px !important;
+          border-top-left-radius: 0 !important;
+          border-top-right-radius: 0 !important;
+        }
+
+        .intervo-pricing-card.intervo-pricing-open-source {
+          border-radius: 12px !important;
+          border-bottom-left-radius: 0 !important;
+          border-bottom-right-radius: 0 !important;
+        }
+
+        .intervo-pricing-save-badge {
+          left: 50% !important;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .intervo-pricing-wrapper {
+          padding: 1rem !important;
+        }
+
+        .intervo-pricing-card {
+          padding: 24px !important;
+        }
+
+        .intervo-pricing-card-content {
+          gap: 24px !important;
+        }
+
+        .intervo-pricing-price-amount {
+          font-size: 2rem !important;
+          line-height: 2rem !important;
+        }
+
+        .intervo-pricing-price-currency {
+          font-size: 1rem !important;
+          line-height: 1.5rem !important;
+        }
+
+        .intervo-pricing-recommended-badge {
+          font-size: 0.75rem !important;
+        }
+
+        .intervo-pricing-tab-container {
+          max-width: none !important;
+        }
+      }
+    </style>
+    <div class="intervo-pricing-wrapper">
+      <div class="intervo-pricing-container-outer">
+        <div class="intervo-pricing-container-inner">
+          <div class="intervo-pricing-cards-container">
+            <!-- Open Source plan -->
+            <div class="intervo-pricing-card intervo-pricing-open-source">
+              <div class="intervo-pricing-card-content">
+                <div class="intervo-pricing-card-header">
+                  <div class="intervo-pricing-plan-title">
+                    <h3>Self-Hosted</h3>
+                    <div class="intervo-pricing-plan-subtitle-row">
+                      <p class="intervo-pricing-plan-subtitle">Open Source</p>
+                    </div>
+                  </div>
+                  <div class="intervo-pricing-price-section">
+                    <p class="intervo-pricing-price-label">Always</p>
+                    <div class="intervo-pricing-price-display">
+                      <h1 class="intervo-pricing-price-amount">Free</h1>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="intervo-pricing-features-section">
+                  <p class="intervo-pricing-features-title">What's included:</p>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      Full source code access
+                    </p>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      Self-hosted deployment
+                    </p>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      Complete data control
+                    </p>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      Unlimited customization
+                    </p>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      Community support
+                    </p>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      MIT License
+                    </p>
+                  </div>
+                </div>
+
+                <div class="intervo-pricing-cta-section">
+                  <a
+                    href="https://github.com/intervo/intervo"
+                    class="intervo-pricing-cta-button"
+                    target="_top"
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="currentColor"
+                    >
+                      <path
+                        d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+                      />
+                    </svg>
+                    View on GitHub
+                  </a>
+                  <p class="intervo-pricing-cta-subtitle">
+                    Open source • Self-hosted
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- Pay as you go plan -->
+            <div class="intervo-pricing-card">
+              <div class="intervo-pricing-card-content">
+                <div class="intervo-pricing-card-header">
+                  <div class="intervo-pricing-plan-title">
+                    <h3>Pay as you go</h3>
+                    <div class="intervo-pricing-plan-subtitle-row">
+                      <p class="intervo-pricing-plan-subtitle">
+                        Developer Plan
+                      </p>
+                    </div>
+                  </div>
+                  <div class="intervo-pricing-price-section">
+                    <p class="intervo-pricing-price-label">Starts with</p>
+                    <div class="intervo-pricing-price-display">
+                      <h1 class="intervo-pricing-price-amount">10</h1>
+                      <span class="intervo-pricing-price-currency">$ USD</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="intervo-pricing-features-section">
+                  <p class="intervo-pricing-features-title">What's inside:</p>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      Access to fast models
+                    </p>
+                    <svg
+                      class="intervo-pricing-info-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 16v-4"></path>
+                      <path d="M12 8h.01"></path>
+                    </svg>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      2,000 AI credits
+                    </p>
+                    <svg
+                      class="intervo-pricing-info-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 16v-4"></path>
+                      <path d="M12 8h.01"></path>
+                    </svg>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      AI Workflow
+                    </p>
+                    <svg
+                      class="intervo-pricing-info-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 16v-4"></path>
+                      <path d="M12 8h.01"></path>
+                    </svg>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      Unlimited Agents
+                    </p>
+                    <svg
+                      class="intervo-pricing-info-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 16v-4"></path>
+                      <path d="M12 8h.01"></path>
+                    </svg>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      Unlimited links to train on
+                    </p>
+                    <svg
+                      class="intervo-pricing-info-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 16v-4"></path>
+                      <path d="M12 8h.01"></path>
+                    </svg>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      API Access
+                    </p>
+                    <svg
+                      class="intervo-pricing-info-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 16v-4"></path>
+                      <path d="M12 8h.01"></path>
+                    </svg>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      Integration
+                    </p>
+                    <svg
+                      class="intervo-pricing-info-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 16v-4"></path>
+                      <path d="M12 8h.01"></path>
+                    </svg>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      Widget chat/voice
+                    </p>
+                    <svg
+                      class="intervo-pricing-info-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 16v-4"></path>
+                      <path d="M12 8h.01"></path>
+                    </svg>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      Basic Analytics
+                    </p>
+                    <svg
+                      class="intervo-pricing-info-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 16v-4"></path>
+                      <path d="M12 8h.01"></path>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="intervo-pricing-cta-section">
+                  <a
+                    href="https://app.intervo.ai/default/settings/plans"
+                    class="intervo-pricing-cta-button"
+                    target="_top"
+                    >Select Pay as you go</a
+                  >
+                  <p class="intervo-pricing-cta-subtitle">
+                    Pay as you go · Plus local taxes
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Subscription plan -->
+            <div class="intervo-pricing-card">
+              <div class="intervo-pricing-card-content">
+                <div class="intervo-pricing-card-header">
+                  <div class="intervo-pricing-plan-title">
+                    <h3>Subscription</h3>
+                    <div class="intervo-pricing-plan-subtitle-row">
+                      <p class="intervo-pricing-plan-subtitle">Business Plan</p>
+                      <p class="intervo-pricing-recommended-badge">
+                        Recommended
+                      </p>
+                    </div>
+                  </div>
+                  <div class="intervo-pricing-price-section">
+                    <div class="intervo-pricing-tab-container">
+                      <div class="intervo-pricing-tab-list">
+                        <button
+                          type="button"
+                          class="intervo-pricing-tab-button"
+                          id="intervo-pricing-yearly-tab"
+                          onclick="switchTab('yearly')"
+                        >
+                          Yearly
+                          <div class="intervo-pricing-save-badge">Save 30%</div>
+                        </button>
+                        <button
+                          type="button"
+                          class="intervo-pricing-tab-button"
+                          id="intervo-pricing-monthly-tab"
+                          onclick="switchTab('monthly')"
+                        >
+                          Monthly
+                        </button>
+                      </div>
+                      <div
+                        class="intervo-pricing-tab-content"
+                        id="intervo-pricing-yearly-content"
+                      >
+                        <div class="intervo-pricing-price-display">
+                          <h1 class="intervo-pricing-price-amount">99</h1>
+                          <span class="intervo-pricing-price-currency"
+                            >$ USD/month</span
+                          >
+                        </div>
+                      </div>
+                      <div
+                        class="intervo-pricing-tab-content"
+                        id="intervo-pricing-monthly-content"
+                      >
+                        <div class="intervo-pricing-price-display">
+                          <h1 class="intervo-pricing-price-amount">129</h1>
+                          <span class="intervo-pricing-price-currency"
+                            >$ USD/month</span
+                          >
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="intervo-pricing-features-section">
+                  <p class="intervo-pricing-features-title">What's inside:</p>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      Access to fast models
+                    </p>
+                    <svg
+                      class="intervo-pricing-info-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 16v-4"></path>
+                      <path d="M12 8h.01"></path>
+                    </svg>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      50,000 AI credits
+                    </p>
+                    <svg
+                      class="intervo-pricing-info-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 16v-4"></path>
+                      <path d="M12 8h.01"></path>
+                    </svg>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      AI Workflow
+                    </p>
+                    <svg
+                      class="intervo-pricing-info-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 16v-4"></path>
+                      <path d="M12 8h.01"></path>
+                    </svg>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      Unlimited links to train on
+                    </p>
+                    <svg
+                      class="intervo-pricing-info-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 16v-4"></path>
+                      <path d="M12 8h.01"></path>
+                    </svg>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      API Access
+                    </p>
+                    <svg
+                      class="intervo-pricing-info-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 16v-4"></path>
+                      <path d="M12 8h.01"></path>
+                    </svg>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      Integration
+                    </p>
+                    <svg
+                      class="intervo-pricing-info-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 16v-4"></path>
+                      <path d="M12 8h.01"></path>
+                    </svg>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      Widget chat/voice
+                    </p>
+                    <svg
+                      class="intervo-pricing-info-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 16v-4"></path>
+                      <path d="M12 8h.01"></path>
+                    </svg>
+                  </div>
+
+                  <div class="intervo-pricing-feature-item">
+                    <p class="intervo-pricing-feature-text">
+                      <svg
+                        class="intervo-pricing-check-icon"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      >
+                        <path d="M20 6 9 17l-5-5"></path>
+                      </svg>
+                      Basic Analytics
+                    </p>
+                    <svg
+                      class="intervo-pricing-info-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    >
+                      <circle cx="12" cy="12" r="10"></circle>
+                      <path d="M12 16v-4"></path>
+                      <path d="M12 8h.01"></path>
+                    </svg>
+                  </div>
+                </div>
+
+                <div class="intervo-pricing-cta-section">
+                  <a
+                    href="https://app.intervo.ai/default/settings/plans"
+                    class="intervo-pricing-cta-button"
+                    id="intervo-pricing-subscription-button"
+                    target="_top"
+                  >
+                    Select Monthly Plan
+                  </a>
+                  <p class="intervo-pricing-cta-subtitle">
+                    Subscription payment
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function switchTab(tab) {
+        const yearlyTab = document.getElementById("intervo-pricing-yearly-tab");
+        const monthlyTab = document.getElementById(
+          "intervo-pricing-monthly-tab"
+        );
+        const yearlyContent = document.getElementById(
+          "intervo-pricing-yearly-content"
+        );
+        const monthlyContent = document.getElementById(
+          "intervo-pricing-monthly-content"
+        );
+        const subscriptionButton = document.getElementById(
+          "intervo-pricing-subscription-button"
+        );
+
+        if (tab === "yearly") {
+          yearlyTab.classList.add("intervo-pricing-active");
+          monthlyTab.classList.remove("intervo-pricing-active");
+          yearlyContent.style.display = "block";
+          monthlyContent.style.display = "none";
+          subscriptionButton.textContent = "Select Yearly Plan";
+        } else {
+          monthlyTab.classList.add("intervo-pricing-active");
+          yearlyTab.classList.remove("intervo-pricing-active");
+          monthlyContent.style.display = "block";
+          yearlyContent.style.display = "none";
+          subscriptionButton.textContent = "Select Monthly Plan";
+        }
+      }
+
+      // Initialize with monthly selected
+      document.addEventListener("DOMContentLoaded", function () {
+        switchTab("monthly");
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,56 @@
+# Environment and configuration files
+**/.env*
+**/config/production.js
+**/config/enterprise.js
+
+# Internal/Premium features
+packages/intervo-backend/src/auth/enterprise-auth.js
+packages/intervo-backend/src/billing/
+packages/intervo-backend/src/features/premium/
+packages/intervo-backend/src/features/analytics/
+packages/intervo-backend/src/integrations/slack-enterprise/
+packages/intervo-backend/routes/*admin*
+packages/intervo-backend/routes/billing.js
+packages/intervo-backend/production_vector_store/
+packages/intervo-backend/vector_stores/
+packages/intervo-backend/rag_py/premium_models/
+
+packages/intervo-frontend/src/components/enterprise/
+packages/intervo-frontend/src/components/billing/
+packages/intervo-frontend/src/pages/admin/
+packages/intervo-frontend/src/app/(admin)/admin/
+packages/intervo-frontend/src/app/(workspace)/[workspaceid]/settings/
+packages/intervo-frontend/src/app/(workspace)/[workspaceid]/agent/(agent)/[slug]/playground/canvas/
+packages/intervo-frontend/src/features/analytics/
+packages/intervo-frontend/src/features/billing/
+
+# Internal documentation and tools
+private-docs/
+internal-tools/
+enterprise-setup/
+
+# Build artifacts and dependencies
+**/node_modules/
+**/dist/
+**/build/
+**/.next/
+**/__pycache__/
+
+# System files
+**/.DS_Store
+**/Thumbs.db
+
+# Logs and temporary files
+**/logs/
+**/tmp/
+**/*.log
+
+# Database dumps and backups
+**/dumps/
+**/backups/
+
+# Secrets and keys
+**/secrets/
+**/*private-key*
+**/*secret*
+**/*token* 

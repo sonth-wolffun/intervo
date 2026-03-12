@@ -1,0 +1,152 @@
+<script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-app.js";
+  import {
+    getAuth,
+    onAuthStateChanged,
+  } from "https://www.gstatic.com/firebasejs/10.12.3/firebase-auth.js";
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyCfhgmPL2NQLT6X0m_mud94LAWudDCFvWw",
+    authDomain: "proprompt-store.firebaseapp.com",
+    projectId: "proprompt-store",
+    storageBucket: "proprompt-store.appspot.com",
+    messagingSenderId: "40442144969",
+    appId: "1:40442144969:web:a911744d137d5bfa8cc518",
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+  window.auth = auth;
+
+  // Function to update Stripe links with the user's email
+  function updateStripeLinks(userEmail) {
+    // Select all Stripe links on the page
+    const stripeLinks = document.querySelectorAll('a[href*="stripe.com"]');
+
+    stripeLinks.forEach((link) => {
+      const url = new URL(link.href);
+      // Append the email as a query parameter
+      url.searchParams.set("prefilled_email", userEmail);
+      link.href = url.toString();
+    });
+  }
+
+  // Function to check if the user is logged in and update Stripe links if necessary
+  function checkAuthAndRedirect() {
+    onAuthStateChanged(
+      auth,
+      (user) => {
+        if (user) {
+          const currentPath = window.location.pathname;
+          if (currentPath === "/signup" || currentPath === "/login") {
+            window.location.href = "/prompts";
+          }
+          // Update Stripe links with the user's email
+          updateStripeLinks(user.email);
+        }
+      },
+      (error) => {
+        console.error("Error checking auth state:", error);
+      }
+    );
+  }
+
+  function updateAuthButton() {
+    onAuthStateChanged(
+      auth,
+      (user) => {
+        // Store the user's auth state in the window object
+        window.authUser = user;
+
+        const authButton = document.querySelector(
+          '[data-authentication="dynamic-header-link"]'
+        );
+        const avatarElement = document.querySelector(
+          '[data-authentication="avatar"]'
+        );
+        const hamburgerElement = document.querySelector(
+          '[data-hamburger="true"]'
+        );
+
+        // Get the current path to hide the hamburger element on specific routes
+        const currentPath = window.location.pathname;
+
+        // If the user is on /master or /prompts or any sub-routes, hide the hamburger
+        const isHamburgerHiddenRoute =
+          currentPath.startsWith("/master") ||
+          currentPath.startsWith("/prompts");
+
+        if (hamburgerElement) {
+          if (isHamburgerHiddenRoute) {
+            hamburgerElement.style.display = "none";
+          } else {
+            hamburgerElement.style.display = "block";
+          }
+        }
+
+        if (user) {
+          // User is logged in, show the avatar and hide the dynamic link
+          if (authButton) {
+            authButton.style.display = "none";
+          }
+          if (avatarElement) {
+            avatarElement.style.display = "block";
+          }
+        } else {
+          // User is not logged in, show the dynamic link and hide the avatar
+          if (authButton) {
+            authButton.style.display = "block";
+          }
+          if (avatarElement) {
+            avatarElement.style.display = "none";
+          }
+        }
+      },
+      (error) => {
+        console.error("Error updating auth button:", error);
+      }
+    );
+  }
+
+  function setupLogoutButton() {
+    const logoutButton = document.querySelector(
+      '[data-authentication="logout-button"]'
+    );
+
+    if (logoutButton) {
+      logoutButton.onclick = () => {
+        auth
+          .signOut()
+          .then(() => {
+            // Clear tokens from localStorage
+            localStorage.removeItem("accessToken");
+            localStorage.removeItem("refreshToken");
+
+            window.alert("You are now logged out");
+
+            console.log("User signed out successfully.");
+
+            // Optionally, clear the window's cached auth state
+            window.authUser = null;
+            console.log("User signed out successfully.");
+            // Optionally, redirect the user to the homepage or login page after logout
+            window.location.href = "/";
+          })
+          .catch((error) => {
+            console.error("Error signing out:", error);
+          });
+      };
+    }
+  }
+
+  // Call the function to setup the logout button
+  setupLogoutButton();
+
+  // Call the function to check auth state and update UI
+  updateAuthButton();
+  // Call the function to check auth and redirect
+  checkAuthAndRedirect();
+</script>

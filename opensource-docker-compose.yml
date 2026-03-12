@@ -1,0 +1,76 @@
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7-jammy
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=password123
+    networks:
+      - intervo-network
+    restart: unless-stopped
+
+  # Frontend Development
+  frontend:
+    image: node:20-alpine
+    working_dir: /app
+    volumes:
+      - .:/app
+      - node_modules:/app/node_modules
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=development
+    command: sh -c "npm install --legacy-peer-deps && npm run build --workspace=intervo-widget && npm exec --workspace=intervo-frontend -- next dev"
+    networks:
+      - intervo-network
+    restart: unless-stopped
+
+  # Backend Development
+  backend:
+    image: node:20-alpine
+    working_dir: /app/packages/intervo-backend
+    volumes:
+      - .:/app
+      - backend_node_modules:/app/packages/intervo-backend/node_modules
+    ports:
+      - "3001:3003"
+    environment:
+      - NODE_ENV=development
+      - MONGO_URI=mongodb://admin:password123@mongodb:27017/intervo?authSource=admin
+    command: sh -c "npm install --legacy-peer-deps && npm run dev"
+    networks:
+      - intervo-network
+    depends_on:
+      - mongodb
+    restart: unless-stopped
+
+  # RAG API (Basic version)
+  rag-api:
+    image: python:3.11-slim
+    working_dir: /app/packages/intervo-backend/rag_py
+    volumes:
+      - .:/app
+      - rag_api_cache:/root/.cache
+    ports:
+      - "4003:4003"
+    environment:
+      - PYTHONPATH=/app/packages/intervo-backend
+      - ENVIRONMENT=development
+    command: sh -c "pip install --no-cache-dir -r requirements.txt && python api.py"
+    networks:
+      - intervo-network
+    restart: unless-stopped
+
+networks:
+  intervo-network:
+    driver: bridge
+
+volumes:
+  node_modules:
+  backend_node_modules:
+  rag_api_cache:
+  mongodb_data:
